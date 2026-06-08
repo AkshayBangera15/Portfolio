@@ -150,7 +150,7 @@ function Grid2({ children }: { children: React.ReactNode }) {
 }
 
 // ── API helpers ───────────────────────────────────────────────────────────────
-async function apiSave(section: string, data: Record<string, unknown>) {
+async function apiSave(section: string, data: any) {
   const res = await fetch(`/api/admin/${section}`, {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
