@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ───────────────────────────────────────── */
+:root {
+  --neon:  #00f5ff;
+  --neon2: #7b2fff;
+  --neon3: #ff006e;
+  --neon4: #00ff88;
+  --amber: #ffb700;
+  --bg0:   #020408;
+  --bg1:   #030b12;
+  --bg2:   #041220;
+  --border: rgba(0,245,255,0.12);
+  --glow:  0 0 20px rgba(0,245,255,0.3),0 0 40px rgba(0,245,255,0.1);
+  --glow2: 0 0 20px rgba(123,47,255,0.4),0 0 40px rgba(123,47,255,0.15);
+}
+
+/* ── Base ────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg0);
+  color: #e2eaf5;
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* CRT scanlines overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg1); }
+::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 2px; }
+
+/* ── Animated Grid Background ────────────────────────────── */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridScroll 20s linear infinite;
+}
+@keyframes gridScroll { to { transform: translate(40px, 40px); } }
+
+/* ── Neon Glitch Text ────────────────────────────────────── */
+.glitch { position: relative; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* ADD THIS */
+  white-space: pre-line;
+
+  background: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--neon3);
+  animation: glitch1 3s infinite linear alternate-reverse;
+}
+.glitch::after {
+  left: -2px;
+  text-shadow: 2px 0 var(--neon2);
+  animation: glitch2 3s infinite linear alternate;
+}
+@keyframes glitch1 {
+  0%,90%  { clip: rect(0,9999px,0,0); }
+  92%     { clip: rect(10px,9999px,80px,0); }
+  94%     { clip: rect(60px,9999px,20px,0); }
+  96%     { clip: rect(30px,9999px,100px,0); }
+  100%    { clip: rect(0,9999px,0,0); }
+}
+@keyframes glitch2 {
+  0%,90%  { clip: rect(0,9999px,0,0); }
+  93%     { clip: rect(50px,9999px,30px,0); }
+  95%     { clip: rect(5px,9999px,70px,0); }
+  97%     { clip: rect(80px,9999px,10px,0); }
+  100%    { clip: rect(0,9999px,0,0); }
+}
+
+/* ── Clip-path Buttons ───────────────────────────────────── */
+.btn-clip-primary {
+  clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.btn-clip-outline {
+  clip-path: polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+}
+
+/* ── Cursor blink ────────────────────────────────────────── */
+.cursor-blink { animation: blink 0.8s step-end infinite; }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+/* ── Float orb ───────────────────────────────────────────── */
+.float-orb { animation: floatOrb 6s ease-in-out infinite; }
+@keyframes floatOrb {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-20px); }
+}
+
+/* ── Fade-in on scroll ───────────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Active dot pulse ────────────────────────────────────── */
+.pulse-dot { animation: pulseDot 2s infinite; }
+@keyframes pulseDot {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.3; }
+}
+
+/* ── Neon border glow ────────────────────────────────────── */
+.neon-border { border: 1px solid var(--border); transition: border-color 0.3s, box-shadow 0.3s; }
+.neon-border:hover { border-color: var(--neon); box-shadow: var(--glow); }
+
+/* ── Timeline ────────────────────────────────────────────── */
+.timeline-line::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(to bottom, var(--neon), var(--neon2), transparent);
+}
