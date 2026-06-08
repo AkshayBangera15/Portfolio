@@ -150,6 +150,7 @@ function Grid2({ children }: { children: React.ReactNode }) {
 }
 
 // ── API helpers ───────────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function apiSave(section: string, data: any) {
   const res = await fetch(`/api/admin/${section}`, {
     method: "POST", headers: { "Content-Type": "application/json" },
